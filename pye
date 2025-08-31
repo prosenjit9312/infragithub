@@ -1,0 +1,17 @@
+FROM node:18-slim
+
+# App ka working directory
+WORKDIR /app
+
+# Package files copy karke dependencies install karo
+COPY package*.json ./
+RUN npm install
+
+# App source copy karo
+COPY . .
+
+# App port
+EXPOSE 3000
+
+# Start command
+CMD ["node", "server.js"]
