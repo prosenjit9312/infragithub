@@ -1,24 +1,24 @@
 name: Create Azure Resource Group
 
 on:
-  workflow_dispatch:   # Sirf manual trigger hoga
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repo
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 2. Azure login
       - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # 3. Create Resource Group
+      - name: Show Subscriptions
+        run: az account show
+
       - name: Create Resource Group
         run: |
           az group create \
