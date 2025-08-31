@@ -1,27 +1,26 @@
-name: Simple Docker Build and Push
+name: Docker Build and Push
 
 on:
   push:
     branches:
-      - main   # sirf main branch pe push hone par chalega
+      - main
 
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout repo
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: DockerHub login
-      - name: Login to DockerHub
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: pdocker25
+          password: ${{ secrets.PDOCKER25 }}
 
-      # Step 3: Build Docker image
-      - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest .
-
-      # Step 4: Push Docker image
-      - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: pdocker25/myapp:latest
