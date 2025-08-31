@@ -1,26 +1,26 @@
-name: Docker Build and Push
+name: Create Azure Resource Group
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:   # Sirf manual trigger hoga
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      # 1. Checkout repo
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Log in to DockerHub
-        uses: docker/login-action@v3
+      # 2. Azure login
+      - name: Azure Login
+        uses: azure/login@v2
         with:
-          username: pdocker25
-          password: ${{ secrets.PDOCKER25 }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: pdocker25/myapp:latest
+      # 3. Create Resource Group
+      - name: Create Resource Group
+        run: |
+          az group create \
+            --name my-github-rg \
+            --location eastus
