@@ -3,7 +3,7 @@ name: Simple Docker Build and Push
 on:
   push:
     branches:
-      - main   # jab main branch me push karega tab chalega
+      - main   # sirf main branch pe push hone par chalega
 
 jobs:
   docker:
