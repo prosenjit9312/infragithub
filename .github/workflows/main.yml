@@ -1,0 +1,52 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repo
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Run tests
+      - name: Run Tests
+        run: npm test
+
+      # Build Docker image
+      - name: Build Docker Image
+        run: docker build -t myapp:latest .
+
+      # Push to DockerHub (agar chahiye)
+      - name: Push Docker Image
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          docker tag myapp:latest mydockerhubuser/myapp:latest
+          docker push mydockerhubuser/myapp:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to Server
+        run: |
+          echo "Deploy step yaha add karega (ssh / kubectl / terraform apply)"
