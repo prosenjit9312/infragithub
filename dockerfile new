@@ -1,0 +1,10 @@
+FROM python:3.11-slim
+
+# Work directory
+WORKDIR /app
+
+# Ek simple Python script copy karenge
+COPY app.py .
+
+# Container start hone par ye chalega
+CMD ["python", "app.py"]
