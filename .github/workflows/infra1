@@ -1,1 +1,22 @@
+name: Create Azure Resource Group
 
+on:
+  workflow_dispatch:
+
+jobs:
+  create-rg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Create Resource Group
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az group create --name my-github-rg --location eastus
