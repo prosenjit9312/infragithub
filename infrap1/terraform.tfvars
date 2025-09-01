@@ -1,0 +1,6 @@
+rg_name        = "rg"
+location       = "East US"
+vnet_name      = "vnet"
+subnet_name    = "subnet"
+admin_user     = "devops"
+admin_password = "devops@12345"
